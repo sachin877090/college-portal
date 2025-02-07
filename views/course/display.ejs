@@ -1,0 +1,47 @@
+<%- include('../header.ejs') %>
+
+    <h1>Course Details</h1>
+    <div class="container mt-5">
+        <table class="table table-bordered text-center">
+
+            <thead>
+                <tr class="bg-info text-center">
+                    <td colspan="6">Course Display</td>
+                    <% if(msg.length> 0){ %>
+                        <div class="alert alert-success">
+                            <!--to print-->
+                            <%= msg %>
+                        </div>
+                        <% } %>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td>Name</td>
+                    <td>Email</td>
+                    <td>Course</td>
+                    <td>Status</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                <% c.forEach((item)=>{ %>
+                    <tr>
+                        <td><%= item.id %></td>
+                        <td><%= item.name %></td>
+                        <td><%= item.email %></td>
+                        <td><%= item.course %></td>
+                        <td><%= item.status %></td>
+                        <td>
+                            <a href="/viewCourse/<%=item.id %>" class="btn btn-info">View</a>
+                            <a href="/EditCourse/<%=item.id %>" class="btn btn-success">Edit</a>
+                            <a href="/DeleteCourse/<%=item.id %>" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <%- include('../footer.ejs')%>
