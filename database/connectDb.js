@@ -7,9 +7,9 @@ const connectDb =()=>{
     .then(()=>{
         console.log('connect')
     }).catch(()=>{
-        console.log(error)
+        // console.log(error)
     })
 }
 
-
+ 
 module.exports = connectDb

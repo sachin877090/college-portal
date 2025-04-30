@@ -1,0 +1,118 @@
+<%- include('./header.ejs') %>
+    <%- include('./sidebar.ejs')%>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Course View</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Course </li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+
+
+                <div class="container-fluid">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">DataTable with default features</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Dob</th>
+                                        <th>Education</th>
+                                        <th>Gender</th>
+                                        <th>Address</th>
+                                        <th>Course</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td>
+                                            <%= c.id %>
+                                        </td>
+                                        <td>
+                                            <%= c.name %>
+                                        </td>
+                                        <td>
+                                            <%= c.email %>
+                                        </td>
+                                        <td>
+                                            <%= c.phone %>
+                                        </td>
+                                        <td>
+                                            <%= c.dob %>
+                                        </td>
+                                        <td>
+                                            <%= c.education %>
+                                        </td>
+                                        <td>
+                                            <%= c.gender %>
+                                        </td>
+                                        <td>
+                                            <%= c.address %>
+                                        </td>
+                                        <td>
+                                            <%= c.course %>
+                                        </td>
+                                        <td>
+                                            <%= c.status %>
+                                        </td>
+                                        <td>
+                                            <%= c.comment %>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Dob</th>
+                                        <th>Education</th>
+                                        <th>Gender</th>
+                                        <th>Address</th>
+                                        <th>Course</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div><!-- /.container -->
+            </div>
+            <!-- /.content-header -->
+
+
+        </div>
+        <!-- /.content-wrapper -->
+
+
+
+
+        <%- include('./footer.ejs') %>

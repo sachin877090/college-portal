@@ -1,14 +1,44 @@
 const CourseModel = require('../../models/course')
 const nodemailer = require('nodemailer')      // npm i nodemailer
+const contactModel = require('../../models/contact')
+const bcrypt = require('bcrypt')
+const cloudinary = require('cloudinary')
+const UserModel = require('../../models/user')
+
+// Configuration
+cloudinary.config({
+    cloud_name: 'dwrrsabdy',
+    api_key: '638798748289963',
+    api_secret: '7RbJbvmxFt6Uds-mVdPs4q_-elg'
+});
+
 class AdminController {
     static dashboard = async (req, res) => {
         try {
-            const { name, email, image } = req.udata
-            res.render('admin/dashboard', { n: name, i: image, e: email })
+          const { name, email, image } = req.udata;
+          const totalUsers = await CourseModel.countDocuments();
+          const approvedUsers = await CourseModel.countDocuments({
+            status: "Approved",
+          });
+          const pendingUsers = await CourseModel.countDocuments({
+            status: "Pending",
+          });
+          const rejectedUsers = await CourseModel.countDocuments({
+            status: "Reject",
+          });
+          res.render("admin/dashboard", {
+            n: name,
+            i: image,
+            e: email,
+            totalUsers,
+            approvedUsers,
+            pendingUsers,
+            rejectedUsers,
+          });
         } catch (error) {
-            console.log(error)
+          console.log(error);
         }
-    }
+      };
     static courseDisplay = async (req, res) => {
         try {
             const { name, email, image } = req.udata
@@ -24,7 +54,7 @@ class AdminController {
             const { name, email, course, status, comment } = req.body
             await CourseModel.findByIdAndUpdate(id, {
                 status,
-                comment
+                comment,
             })
             if (status == "Reject") {
                 this.RejectEmail(name, email, course, status, comment)
@@ -257,5 +287,245 @@ class AdminController {
                `, // html body
         });
     }
+    static courseView = async (req, res) => {
+        try {
+          const { name, image } = req.udata;
+          const id = req.params.id;
+          //console.log(id)
+          const course = await CourseModel.findById(id);
+          // console.log(course)
+          res.render("admin/view", { c: course, n: name, i: image });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static courseDelete = async (req, res) => {
+        try {
+          const { name, image } = req.udata;
+          const id = req.params.id;
+          //console.log(id)
+          const course = await CourseModel.findByIdAndDelete(req.params.id);
+          //console.log(course)
+          // res.render("admin/view", { item: course, n: name, i: image });
+          res.redirect("/admin/courseDisplay");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static courseEdit = async (req, res) => {
+        try {
+          const { name, image } = req.udata;
+          const id = req.params.id;
+          //console.log(id)
+          const course = await CourseModel.findById(req.params.id);
+          //console.log(course)
+          res.render("admin/editCourse", { c: course, n: name, i: image });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static update_course = async (req, res) => {
+        try {
+          const id = req.params.id;
+          const { name, email, phone, education, gender, dob, course, address } =
+            req.body;
+          await CourseModel.findByIdAndUpdate(id, {
+            name,
+            email,
+            phone,
+            address,
+            dob,
+            gender,
+            education,
+            course,
+          });
+          req.flash("success", "Course updated successfully by Admin.");
+          res.redirect("/admin/Coursedisplay");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static contactDisplay = async (req, res) => {
+        try {
+          const { name, image, email } = req.udata;
+          const course = await contactModel.find();
+    
+          res.render("admin/contactDisplay", {
+            n: name,
+            i: image,
+            e: email,
+            c: course,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static delete_message = async (req, res) => {
+        try {
+          const id = req.params.id;
+          await contactModel.findByIdAndDelete(id);
+    
+          res.redirect("/admin/contactDisplay");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static update_pass = async (req, res) => {
+        try {
+          const { name, image, email } = req.udata;
+          res.render("admin/updatePass", {
+            n: name,
+            i: image,
+            e: email,
+            msg: req.flash("error"),
+            msg1: req.flash("success"),
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static profile_update = async (req, res) => {
+        try {
+          const { name, image, email } = req.udata;
+          res.render("admin/profileUpdate", {
+            n: name,
+            i: image,
+            e: email,
+            msg: req.flash("success"),
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static changePassword = async (req, res) => {
+        try {
+          const { id } = req.udata;
+          // console.log(req.body);
+          const { op, np, cp } = req.body;
+          if (op && np && cp) {
+            const user = await UserModel.findById(id);
+            const isMatched = await bcrypt.compare(op, user.password);
+            //console.log(isMatched)
+            if (!isMatched) {
+              req.flash("error", "Current password is incorrect ");
+              res.redirect("/admin/update_pass");
+            } else {
+              if (np != cp) {
+                req.flash("error", "Password does not match");
+                res.redirect("/admin/update_pass");
+              } else {
+                const newHashPassword = await bcrypt.hash(np, 10);
+                await UserModel.findByIdAndUpdate(id, {
+                  password: newHashPassword,
+                });
+                req.flash("success", "Password Updated by Admin successfully ");
+                res.redirect("/admin/update_pass");
+              }
+            }
+          } else {
+            req.flash("error", "ALL fields are required ");
+            res.redirect("/admin/update_pass");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      static updateProfile = async (req, res) => {
+        try {
+          const { id } = req.udata;
+          const { name, email } = req.body;
+          if (req.files) {
+            const user = await UserModel.findById(id);
+            const imageID = user.image.public_id;
+            // console.log(imageID);
+    
+            //deleting image from Cloudinary
+            await cloudinary.uploader.destroy(imageID);
+            //new image update
+            const imagefile = req.files.image;
+            const imageupload = await cloudinary.uploader.upload(
+              imagefile.tempFilePath,
+              {
+                folder: "userprofile",
+              }
+            );
+            var data = {
+              name: name,
+              email: email,
+              image: {
+                public_id: imageupload.public_id,
+                url: imageupload.secure_url,
+              },
+            };
+          } else {
+            var data = {
+              name: name,
+              email: email,
+            };
+          }
+          await UserModel.findByIdAndUpdate(id, data);
+          req.flash("success", "Profile Update by Admin successfully");
+          res.redirect("/admin/profile_update");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      // ApprovedUsers
+      static ApprovedUsers = async (req, res) => {
+        try {
+          const { name, email, image } = req.udata;
+          const course = await CourseModel.find({ status: "Approved" });
+          res.render("admin/approvedUsers", {
+            n: name,
+            i: image,
+            e: email,
+            c: course,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      // PendingUsers
+      static PendingUsers = async (req, res) => {
+        try {
+          const { name, email, image } = req.udata;
+          const course = await CourseModel.find({ status: "Pending" });
+          res.render("admin/pendingUsers", {
+            n: name,
+            i: image,
+            e: email,
+            c: course,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      // RejectUsers
+      static RejectUsers = async (req, res) => {
+        try {
+          const { name, email, image } = req.udata;
+          const course = await CourseModel.find({ status: "Reject" });
+          res.render("admin/rejectUsers", {
+            n: name,
+            i: image,
+            e: email,
+            c: course,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
 }
 module.exports = AdminController

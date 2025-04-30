@@ -105,44 +105,66 @@ class Frontcontroller {
     //verifilogin
     static verifyLogin = async (req, res) => {
         try {
-            // console.log(req.body)
-            const { email, password } = req.body
-
-            const isEmail = await UserModal.findOne({ email });
-            if (!isEmail) {
-                req.flash("error", "You are not register");
-                return res.redirect("/")
-            } else {
-                const isMatch = await bcrypt.compare(password, isEmail.password)
-                // console.log(isMatch)
-                if (isMatch) {
-
-                    //token
-                    if (isEmail.role == 'admin') {
-                        const token = jwt.sign({ ID: isEmail.id }, 'qwertyuiop')
-                        // console.log(token)
-                        res.cookie('token', token)
-                        return res.redirect("/admin/dashboard")
-                    }
-                    if (isEmail.role == 'student') {
-                        const token = jwt.sign({ ID: isEmail.id }, 'qwertyuiop')
-                        // console.log(token)
-                        res.cookie('token', token)
-                        return res.redirect('/home')
-                    }
-
+          const { email, password } = req.body;
+          if (email && password) {
+            const user = await UserModel.findOne({ email: email });
+            if (user != null) {
+              const isMatched = await bcrypt.compare(password, user.password);
+              //  console.log(isMatched)
+              if (isMatched) {
+                if (user.role == "admin" && user.is_verify == 1) {
+                  //token create
+                  var jwt = require("jsonwebtoken");
+                  let token = jwt.sign({ ID: user.id }, 'qwertyuiop');
+                  //console.log(token)middleware
+                  res.cookie("token", token, {
+                    httpOnly: true,
+                    secure: true,
+                    maxAge: 3600000,
+                  });
+                  res.redirect("/admin/dashboard");
+                } else if (user.role == "student" && user.is_verify == 1) {
+                  //token create
+                  var jwt = require("jsonwebtoken");
+                  let token = jwt.sign({ ID: user.id }, 'qwertyuiop');
+                  //console.log(token)middleware
+                  // res.cookie('token', token,{maxAge: 60000});
+                  res.cookie("token", token, {
+                    httpOnly: true,
+                    secure: true,
+                    maxAge: 3600000, // Expires in 1 hrs
+                  });
+                  if (req.session) {
+                    req.session.destroy((err) => {
+                      if (err) {
+                        console.error("Error destroying session:", err);
+                      }
+                    });
+                  }
+                  res.redirect("/home");
                 } else {
-                    req.flash("error", "email or password does't match");
-                    return res.redirect("/")
+                  req.flash("error", "Please verify your Email.");
+                  return res.redirect("/");
                 }
+              } else {
+                req.flash("error", "Email and Password is not correct.");
+                return res.redirect("/");
+              }
+            } else {
+              req.flash("error", "you are not a register user");
+              return res.redirect("/");
             }
+          } else {
+            req.flash("error", "All fields Required");
+            return res.redirect("/");
+          }
         } catch (error) {
-            console.log(error)
+          console.log(error);
         }
-    }
+    };
     static logout = async (req, res) => {
         try {
-            res.clearCookie('token')
+            
             res.redirect('/')
         } catch (error) {
             console.log(error)
@@ -193,7 +215,7 @@ class Frontcontroller {
     static updateProfile = async (req, res) => {
         try {
             const { id } = req.udata
-            const { name, email, role } = req.body;
+            const { name, email } = req.body;
             if (req.files) {
                 const user = await UserModel.findById(id);
                 const imageID = user.image.public_id
@@ -305,5 +327,26 @@ class Frontcontroller {
           console.log(error);
         }
     }
+    static verifyMail = async (req, res) => {
+        try {
+          //console.log(req.query.id)
+          const updateinfo = await UserModel.findByIdAndUpdate(req.query.id, {
+            is_verify: 1,
+          });
+          // console.log(updateinfo);
+          if (updateinfo) {
+            let token = jwt.sign({ ID: updateinfo.id }, "qwertyuiop");
+            //console.log(token)middleware
+            res.cookie("token", token, token, {
+              httpOnly: true,
+              secure: true,
+              maxAge: 3600000,
+            });
+            res.redirect("/home");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
 }
 module.exports = Frontcontroller

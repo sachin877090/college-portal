@@ -1,0 +1,79 @@
+<%- include('./header.ejs') %>
+    <%- include('./sidebar.ejs')%>
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Security</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Security</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+
+
+                <div class="container-fluid">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Change Password</h3>
+                            <% if(msg.length>0){%>
+                                <div class="alert alert-danger text-center">
+                                    <%= msg %>
+                                </div>
+                                <%}%>
+
+                                    <% if(msg1.length>0){%>
+                                        <div class="alert alert-success text-center">
+                                            <%= msg1 %>
+                                        </div>
+                                        <%}%>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+
+                                <form action="/admin/changePassword" method="post">
+                                    <div class="mb-3">
+                                        <label for="">Old Password</label>
+                                        <input type="text" name="op" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="">New Password</label>
+                                        <input type="password" name="np" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="">Confirm Password</label>
+                                        <input type="password" name="cp" class="form-control">
+                                    </div>
+                                    <button type="submit" class="btn btn-success text-white">Change Password</button>
+
+                                </form>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div><!-- /.container -->
+            </div>
+            <!-- /.content-header -->
+
+
+        </div>
+        <!-- /.content-wrapper -->
+
+
+
+
+        <%- include('./footer.ejs') %>

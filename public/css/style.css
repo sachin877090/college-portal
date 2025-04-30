@@ -2,54 +2,71 @@
                             General
 ------------------------------------------------------------------ */
 
-body{
-    background: #f7f0bd !important;
+body {
+  /* background: #f7f0bd !important; */
+  background-color: #8ec5fc;
+  background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
 }
 
+/* ::placeholder{
+    color: gray !important;
+    font-weight: lighter;
+}
+
+label{
+    padding-top: 10% !important;
+}
+
+button{
+    background: #2a1a6f !important;
+} */
 
 /* ---------------------------------------------------------------
                             #navbar
 ------------------------------------------------------------------ */
 
-#navbar nav{
-    background: #0000009c !important;
+#navbar nav {
+  /* background: #0000009c !important; */
+  background: #5670f59c !important;
 }
 
-.webViewPosition{
-    text-align: start !important;
+.webViewPosition {
+  text-align: start !important;
 }
 
 /* ---------------------------------------------------------------
                             #carousel
 ------------------------------------------------------------------ */
 
-.carouselHeight{
-    height: 100vh;
+.carouselHeight {
+  height: 100vh;
 }
 
 /* ---------------------------------------------------------------
                             #login
 ------------------------------------------------------------------ */
 
-.bglogin{
-    background: #f7f0bd;
+.bglogin {
+  /* background: #f7f0bd; */
+  background-color: #8ec5fc;
+  background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+  border-radius: 4rem;
 }
 
 /* ---------------------------------------------------------------
                             #footer
 ------------------------------------------------------------------ */
 
-#footer
-{
-    background: #2a1a6f;
+#footer {
+  background: #402d98;
 }
 
-#social{
-    background: white;
+#social {
+  background: white;
 }
 
-#detail p{
-    text-align: justify;
+#detail p {
+  text-align: justify;
 }
 
 /* ---------------------------------------------------------------
@@ -57,29 +74,25 @@ body{
 ------------------------------------------------------------------ */
 
 .page-title-area {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
-.paddingValue label
-{
-    padding: 0 !important;
+.paddingValue label {
+  padding: 0 !important;
 }
 
 /* ---------------------------------------------------------------
                             Media Query
 ------------------------------------------------------------------ */
 
-@media (max-width:992px) {
-    #navbarsExample11{
-        justify-content: center !important;
-    }
+@media (max-width: 992px) {
+  #navbarsExample11 {
+    justify-content: center !important;
+  }
 
-    .mobileViewButton{
-        background: white !important;
-        margin-bottom: 2rem;
-    }
+  .mobileViewButton {
+    background: white !important;
+    margin-bottom: 2rem;
+  }
 }
-
-
-

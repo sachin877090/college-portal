@@ -1,0 +1,99 @@
+<%- include('./header.ejs') %>
+    <%- include('./sidebar.ejs')%>
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Security</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Security</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+
+
+                <div class="container-fluid">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title text-center"> Update profile </h3>
+                            <% if(msg.length>0){%>
+                                <div class="alert alert-success text-center">
+                                    <%= msg %>
+                                </div>
+                                <%}%>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <form action="/admin/updateProfile" method="post" enctype="multipart/form-data">
+                                            <div class="mb-3">
+                                                <label for="">Name</label>
+                                                <input type="text" value="<%= n %>" name="name" class="form-control">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="">Email</label>
+                                                <input type="text" value="<%= e %>" readonly name="email"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="">Image</label>
+                                                <input type="file" name="image" class="form-control">
+                                                <img src="<%= i.url %>" alt="" width="50">
+                                            </div>
+
+                                            <button type="submit" class="btn btn-success">Update Profile</button>
+
+
+                                        </form>
+
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="col-md-5 mt-5">
+
+                                <center><img src="<%= i.url %>" alt="" height="150px" width="120px"
+                                        style="border-radius: 0px;margin-top: 10px;">
+                                    <div class="card-body">
+                                        <h4 style="font-weight: bold;font-family: 'Open Sans', sans-serif;">Name:<%= n
+                                                %>
+                                        </h4>
+                                        <h4 style="font-weight: bold;font-family: 'Open Sans', sans-serif;">Email:<%= e
+                                                %>
+                                        </h4>
+                                </center>
+                                <br>
+
+                            </div><!--card body end-->
+
+                        </div>
+                    </div><!--row end-->
+
+
+                </div>
+                <!-- /.card -->
+            </div><!-- /.container -->
+        </div>
+        <!-- /.content-header -->
+
+
+        </div>
+        <!-- /.content-wrapper -->
+
+
+
+
+        <%- include('./footer.ejs') %>
