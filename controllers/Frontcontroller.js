@@ -1,4 +1,4 @@
-const UserModal = require('../models/user')
+const UserModel = require("../models/user")
 const bcrypt = require('bcrypt')
 const cloudinary = require('cloudinary')
 const jwt = require('jsonwebtoken')
@@ -112,7 +112,7 @@ class Frontcontroller {
               const isMatched = await bcrypt.compare(password, user.password);
               //  console.log(isMatched)
               if (isMatched) {
-                if (user.role == "admin" && user.is_verify == 1) {
+                if (user.role == "admin" && user.is_verify == 0) {
                   //token create
                   var jwt = require("jsonwebtoken");
                   let token = jwt.sign({ ID: user.id }, 'qwertyuiop');
@@ -123,7 +123,7 @@ class Frontcontroller {
                     maxAge: 3600000,
                   });
                   res.redirect("/admin/dashboard");
-                } else if (user.role == "student" && user.is_verify == 1) {
+                } else if (user.role == "student" && user.is_verify == 0) {
                   //token create
                   var jwt = require("jsonwebtoken");
                   let token = jwt.sign({ ID: user.id }, 'qwertyuiop');

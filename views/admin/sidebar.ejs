@@ -1,7 +1,7 @@
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="/admin/dashboard" class="brand-link">
         <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">Admin</span>
@@ -15,14 +15,15 @@
                 <img src="<%= i.url %>" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block"><%= n %></a>
+                <a href="/admin/dashboard" class="d-block">
+                    <%= n %>
+                </a>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview">
@@ -40,13 +41,13 @@
                                 <p>Display</p>
                             </a>
                         </li>
-                        
+
                     </ul>
                 </li>
                 <!--Contact-->
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="" class="nav-link active">
+                        <i class="nav-icon fas fa-address-book"></i>
                         <p>
                             Contact
                             <i class="right fas fa-angle-left"></i>
@@ -59,7 +60,35 @@
                                 <p>Display</p>
                             </a>
                         </li>
-                        
+
+                    </ul>
+                </li>
+
+                <!--security-->
+                <li class="nav-item has-treeview ">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-shield-alt"></i>
+                        <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+                        <p>
+                            --security--
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/admin/update_pass" class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Change Password</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/admin/profile_update" class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Update profile</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -68,7 +97,7 @@
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Logout
-                            <span class="right badge badge-danger">New</span>
+
                         </p>
                     </a>
                 </li>
