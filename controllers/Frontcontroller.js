@@ -69,7 +69,7 @@ class Frontcontroller {
                 req.flash("error", "All Field are Required.");
                 return res.redirect('/register');
             }
-            const isEmail = await UserModal.findOne({ email });
+            const isEmail = await UserModel.findOne({ email });
             if (isEmail) {
                 req.flash("error", "email alredy exist.");
                 return res.redirect("/register")
@@ -87,7 +87,7 @@ class Frontcontroller {
             // console.log(imageUpload)
             const hashpassword = await bcrypt.hash(password, 10)
 
-            const data = await UserModal.create({
+            const data = await UserModel.create({
                 name,
                 email,
                 password: hashpassword,
@@ -184,7 +184,7 @@ class Frontcontroller {
             // console.log(req.body);
             const { op, np, cp } = req.body;
             if (op && np && cp) {
-                const user = await UserModal.findById(id);
+                const user = await UserModel.findById(id);
                 const isMatched = await bcrypt.compare(op, user.password);
                 //console.log(isMatched)
                 if (!isMatched) {
@@ -196,7 +196,7 @@ class Frontcontroller {
                         res.redirect("/profile");
                     } else {
                         const newHashPassword = await bcrypt.hash(np, 10);
-                        await UserModal.findByIdAndUpdate(id, {
+                        await UserModel.findByIdAndUpdate(id, {
                             password: newHashPassword,
                         });
                         req.flash("success", "Password Updated successfully ");
@@ -255,11 +255,11 @@ class Frontcontroller {
     static forgetPasswordVerify = async (req, res) => {
         try {
             const { email } = req.body;
-            const userData = await UserModal.findOne({ email: email });
+            const userData = await UserModel.findOne({ email: email });
             //console.log(userData)
             if (userData) {
                 const randomString = randomstring.generate();
-                await UserModal.updateOne(
+                await UserModel.updateOne(
                     { email: email },
                     { $set: { token: randomString } }
                 );
@@ -303,7 +303,7 @@ class Frontcontroller {
     static reset_Password = async (req, res) => {
         try {
           const token = req.query.token;
-          const tokenData = await UserModal.findOne({ token: token });
+          const tokenData = await UserModel.findOne({ token: token });
           if (tokenData) {
             res.render("reset-password", { user_id: tokenData._id });
           } else {
@@ -317,7 +317,7 @@ class Frontcontroller {
         try {
           const { password, user_id } = req.body;
           const newHashPassword = await bcrypt.hash(password, 10);
-          await UserModal.findByIdAndUpdate(user_id, {
+          await UserModel.findByIdAndUpdate(user_id, {
             password: newHashPassword,
             token: "",
           });
